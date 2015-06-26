@@ -8,7 +8,20 @@ using System.IO;                            // Stream, StreamReader
 using System.Net;                           // WebRequest, HttpWebResponse, HttpStatusCode, WebClient
 using System.Xml;                           // XmlDocument
 using System.Runtime.Serialization.Json;    // DataContractJsonSerializer
-using WCFWebServiceConsumer1.DataObjects;
+//using WCFWebServiceConsumer1.DataObjects;
+
+// WCFWebServiceConsumer1
+// This console application demonstrates a simple consumer of WCFWebServiceApplication1
+// RESt formats consumed include:
+//  -Simple types: string, int
+//  -XML formats
+//  -JSON formats
+//  -Object passed for XML/JSON method formats is a complex data object "StateObject"
+//   StateObject contains:
+//      Id          -int
+//      Abrv        -string
+//      Name        -string
+//      StateList   -List<string>
 
 namespace WCFWebServiceConsumer1
 {
@@ -18,6 +31,17 @@ namespace WCFWebServiceConsumer1
         {
             Console.WriteLine("WCFWebServiceConsumer1" + '\n');
             Console.WriteLine("This console app demonstrates the consumation of WCFWebServiceApplication1");
+            Console.WriteLine("RESt formats consumed include:");
+            Console.WriteLine(" -Simple types: string, int");
+            Console.WriteLine(" -XML formats");
+            Console.WriteLine(" -JSON formats");
+            Console.WriteLine("Object passed for XML/JSON method formats is a complex data object \"StateObject\"");
+            Console.WriteLine("StateObject contains:");
+            Console.WriteLine(" Id          -int");
+            Console.WriteLine(" Abrv        -string");
+            Console.WriteLine(" Name        -string");
+            Console.WriteLine(" StateList   -List<string>");
+
             Console.WriteLine("Several test processes are used:");
             Console.WriteLine("1.Simple standard process");
             Console.WriteLine("2.Simple more streamlined process");
@@ -117,25 +141,34 @@ namespace WCFWebServiceConsumer1
                 xmlDoc2.LoadXml(xmlDoc.InnerXml);
 
                 Console.WriteLine("Id:");
-                XmlNodeList list2 = xmlDoc2.GetElementsByTagName("Id");
-                foreach (XmlNode node in list2)
+                XmlNodeList list = xmlDoc2.GetElementsByTagName("Id");
+                foreach (XmlNode node in list)
                 {
                     Console.WriteLine(node.InnerText);
                 }
 
                 Console.WriteLine("Abrv:");
-                list2 = xmlDoc2.GetElementsByTagName("Abrv");
-                foreach (XmlNode node in list2)
+                list = xmlDoc2.GetElementsByTagName("Abrv");
+                foreach (XmlNode node in list)
                 {
                     Console.WriteLine(node.InnerText);
                 }
 
                 Console.WriteLine("Name:");
-                list2 = xmlDoc2.GetElementsByTagName("Name");
-                foreach (XmlNode node in list2)
+                list = xmlDoc2.GetElementsByTagName("Name");
+                foreach (XmlNode node in list)
                 {
                     Console.WriteLine(node.InnerText);
                 }
+
+                Console.WriteLine("State List:");  
+                list = xmlDoc2.GetElementsByTagName("a:string");//Check against 'a:string' because StateList is List<string>
+                foreach (XmlNode node in list)
+                {
+                    Console.WriteLine(" -" + node.InnerText);
+                }
+
+
 
 
                 // This was not working

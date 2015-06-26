@@ -18,6 +18,7 @@ namespace WCFWebServiceConsumer1.DataObjects
         private int _id;
         private string _abrv;
         private string _name;
+        private List<string> _stateList;
 
         public int Id { get { return _id; } set { _id = value; } }
 
@@ -26,6 +27,9 @@ namespace WCFWebServiceConsumer1.DataObjects
 
         //[DataMember]
         public string Name { get { return _name; } set { _name = value; } }
+
+        //[DataMember]
+        public List<string> StateList { get { return _stateList; } set { _stateList = value; } }
     }
 
 }
