@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 // Added usings
+using System.Data;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 
@@ -20,6 +21,7 @@ namespace WCFWebServiceConsumer1.DataObjects
         private string _abrv;
         private string _name;
         private List<string> _stateList;
+        //private DataTable _dt;
 
         [DataMember]
         public int Id { get { return _id; } set { _id = value; } }
@@ -32,6 +34,11 @@ namespace WCFWebServiceConsumer1.DataObjects
 
         [DataMember]
         public List<string> StateList { get { return _stateList; } set { _stateList = value; } }
+
+        /*  -- DataTable not receiveing correctly from service
+        [DataMember]
+        public DataTable DataTable { get { return _dt; } set { _dt = value; } }
+        */
     }
 
 }

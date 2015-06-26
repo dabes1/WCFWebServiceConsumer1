@@ -242,9 +242,12 @@ namespace WCFWebServiceConsumer1
                 {
                     // error
                 }
-                DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(StateObject));
+                DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(StateObject));                
                 object objResp = jsonSerializer.ReadObject(respJSON_Http.GetResponseStream());
                 StateObject StObj = objResp as StateObject;
+
+                // DataTable not being correctly received from Service
+                //System.Data.DataTable dt = StObj.DataTable;
             }
 
 
