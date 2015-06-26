@@ -17,20 +17,24 @@ namespace WCFWebServiceConsumer1
         static void Main(string[] args)
         {
             Console.WriteLine("WCFWebServiceConsumer1" + '\n');
-            Console.WriteLine("This console app demonstrates the consumation of WCFWebServiceApplication1" + '\n');
+            Console.WriteLine("This console app demonstrates the consumation of WCFWebServiceApplication1");
             Console.WriteLine("Several test processes are used:");
             Console.WriteLine("1.Simple standard process");
             Console.WriteLine("2.Simple more streamlined process");
             Console.WriteLine("3.XML Format response and parsing - simple examples");
-            Console.WriteLine("4.JSON Format response and parsing - simple examples");
+            Console.WriteLine("4.JSON(JavaScript Object Notation) Format response/parsing - simple examples");
             Console.WriteLine("");
             Console.WriteLine("");
 
 
             #region - The original simple method to consume, works for simple types (string, int, etc)
-            Console.WriteLine("********************************************************************************");
+            Console.WriteLine("*****************************************************************************-");
+            Console.WriteLine("1.Simple standard process");
             Console.WriteLine("This section uses:");
-            Console.WriteLine("WebRequest, HttpWebResponse, Stream and StreamReader");
+            Console.WriteLine("-WebRequest");
+            Console.WriteLine("-HttpWebResponse");
+            Console.WriteLine("-Stream");
+            Console.WriteLine("-StreamReader");
             Console.WriteLine("Consumed Object: StateObject");
             Console.WriteLine("Message formats: not applied.");
             Console.WriteLine("RESt call to: http://localhost:57531/Service1.svc/State/10");
@@ -55,9 +59,12 @@ namespace WCFWebServiceConsumer1
 
 
             #region - Simple steps to consume the RESt StateObject from WCFWebServiceApplication1
-            Console.WriteLine("********************************************************************************");
+            Console.WriteLine("*****************************************************************************-");
+            Console.WriteLine("2.Simple more streamlined process");
             Console.WriteLine("This section uses:");
-            Console.WriteLine("WebRequest, WebResponse and StreamReader");
+            Console.WriteLine("-WebRequest");
+            Console.WriteLine("-WebResponse");
+            Console.WriteLine("-StreamReader");
             Console.WriteLine("Consumed Object: StateObject");
             Console.WriteLine("Message formatting not applied.");
             Console.WriteLine("RESt call to: http://localhost:57531/Service1.svc/State/10");
@@ -76,11 +83,14 @@ namespace WCFWebServiceConsumer1
 
 
             #region - The original simple method to consume, works for simple types, example from: http://stackoverflow.com/questions/14058992/wcf-rest-service-consumption-in-c-sharp-console-application
-            Console.WriteLine("********************************************************************************");
+            Console.WriteLine("*****************************************************************************-");
+            Console.WriteLine("3.XML Format response and parsing - simple examples");
             Console.WriteLine("This section uses:");
-            Console.WriteLine("WebRequest (ContentType = @\"application / xml; charset = utf - 8\",");
-            Console.WriteLine("HttpWebResponse, XmlDocument (GetElementsByTagName), XmlReader, XmlNodeList to");
-            Console.WriteLine("consume the StateoObject from the WCFWebServiceApplication1");
+            Console.WriteLine("-WebRequest (ContentType = @\"application / xml; charset = utf - 8\",");
+            Console.WriteLine("-HttpWebResponse");
+            Console.WriteLine("-XmlDocument (GetElementsByTagName)");
+            Console.WriteLine("-XmlReader");
+            Console.WriteLine("-XmlNodeList");
             Console.WriteLine("Message formats: WebMessageFormat.XML");
             Console.WriteLine("RESt call to: http://localhost:57531/Service1.svc/StateXML/15");
             Console.WriteLine("The returned StateObject:");
@@ -93,11 +103,11 @@ namespace WCFWebServiceConsumer1
             if (respXML.StatusCode == HttpStatusCode.OK)
             {
                 // Well this works, but it only displays InnerText
-                Console.WriteLine("Using XmlDocument.InnerText:" + '\n');
+                Console.WriteLine("Using XmlDocument.InnerText:");
                 XmlDocument xmlDoc = new XmlDocument();
                 XmlReader xmlRdr = new XmlTextReader(respXML.GetResponseStream());
                 xmlDoc.Load(xmlRdr);
-                Console.WriteLine(xmlDoc.InnerText);
+                Console.WriteLine(xmlDoc.InnerText + '\n');
 
 
                 // Using GetElementsByTagName allows you to specifically target a specific StateObject property name
@@ -151,28 +161,27 @@ namespace WCFWebServiceConsumer1
 
 
             #region - Example to consume a Data object, example from: http://stackoverflow.com/questions/14058992/wcf-rest-service-consumption-in-c-sharp-console-application
-            Console.WriteLine("********************************************************************************");
+            Console.WriteLine("*****************************************************************************-");
+            Console.WriteLine("4.JSON(JavaScript Object Notation) Format response/parsing - simple examples");
+            Console.WriteLine("This section uses:");
+            Console.WriteLine("-WebRequest (ContentType = @\"application/json; charset=utf-8\"");
+            Console.WriteLine("-HttpWebResponse");
+            Console.WriteLine("-StreamReader");
+            Console.WriteLine("Message formats: WebMessageFormat.JSON");
+            Console.WriteLine("RESt call to: http://localhost:57531/Service1.svc/StateJSON/5");
+            Console.WriteLine("The returned StateObject:");
+
             WebRequest reqJSON = WebRequest.Create(@"http://localhost:57531/Service1.svc/StateJSON/5");
             reqJSON.Method = "GET";
             reqJSON.ContentType = @"application/json; charset=utf-8";
-
-            // original version that failed
-            //HttpWebResponse respJSON = (HttpWebResponse)reqJSON.GetResponse();
-            //string jResp = string.Empty;
-            //using (StreamReader sr = new StreamReader(respJSON.GetResponseStream()))
-            //{
-            //    jResp = sr.ReadToEnd();
-            //    Console.WriteLine(jResp);
-            //}
-
-            // 2nd try
-            //HttpWebResponse respJSON = reqJSON.GetResponse() as HttpWebResponse;
-            HttpWebResponse respJSON2 = (HttpWebResponse)reqJSON.GetResponse();
-            string jResp = string.Empty;
-            using (StreamReader sr = new StreamReader(respJSON2.GetResponseStream()))
+            HttpWebResponse respJSON = reqJSON.GetResponse() as HttpWebResponse;
+            string strJSON = string.Empty;
+            using (StreamReader sr = new StreamReader(respJSON.GetResponseStream()))
             {
-                jResp = sr.ReadToEnd();
-                Console.WriteLine(jResp);
+                Console.WriteLine("Using StreamReader to read the JSON response:");
+                strJSON = sr.ReadToEnd();
+                Console.WriteLine(strJSON);
+                Console.WriteLine("");
             }
 
             #endregion
