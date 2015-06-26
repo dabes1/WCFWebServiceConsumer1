@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 // Added usings
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 
 namespace WCFWebServiceConsumer1.DataObjects
 {
@@ -12,7 +13,7 @@ namespace WCFWebServiceConsumer1.DataObjects
     {
     }
 
-    //[DataContract]
+    [DataContract]
     public class StateObject
     {
         private int _id;
@@ -20,15 +21,16 @@ namespace WCFWebServiceConsumer1.DataObjects
         private string _name;
         private List<string> _stateList;
 
+        [DataMember]
         public int Id { get { return _id; } set { _id = value; } }
 
-        //[DataMember]
+        [DataMember]
         public string Abrv { get { return _abrv; } set { _abrv = value; } }
 
-        //[DataMember]
+        [DataMember]
         public string Name { get { return _name; } set { _name = value; } }
 
-        //[DataMember]
+        [DataMember]
         public List<string> StateList { get { return _stateList; } set { _stateList = value; } }
     }
 

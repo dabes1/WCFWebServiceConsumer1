@@ -8,7 +8,7 @@ using System.IO;                            // Stream, StreamReader
 using System.Net;                           // WebRequest, HttpWebResponse, HttpStatusCode, WebClient
 using System.Xml;                           // XmlDocument
 using System.Runtime.Serialization.Json;    // DataContractJsonSerializer
-//using WCFWebServiceConsumer1.DataObjects;
+using WCFWebServiceConsumer1.DataObjects;
 
 // WCFWebServiceConsumer1
 // This console application demonstrates a simple consumer of WCFWebServiceApplication1
@@ -46,7 +46,10 @@ namespace WCFWebServiceConsumer1
             Console.WriteLine("1.Simple standard process");
             Console.WriteLine("2.Simple more streamlined process");
             Console.WriteLine("3.XML Format response and parsing - simple examples");
-            Console.WriteLine("4.JSON(JavaScript Object Notation) Format response/parsing - simple examples");
+            Console.WriteLine("4.JSON(JavaScript Object Notation) Format response/parsing");
+            Console.WriteLine(" -simple example");
+            Console.WriteLine(" -DataContractJsonSerializer correctly creates the client's StateObject");
+                
             Console.WriteLine("");
             Console.WriteLine("");
 
@@ -196,15 +199,21 @@ namespace WCFWebServiceConsumer1
             #region - Example to consume a Data object, example from: http://stackoverflow.com/questions/14058992/wcf-rest-service-consumption-in-c-sharp-console-application
             Console.WriteLine("*****************************************************************************-");
             Console.WriteLine("4.JSON(JavaScript Object Notation) Format response/parsing - simple examples");
-            Console.WriteLine("This section uses:");
-            Console.WriteLine("-WebRequest (ContentType = @\"application/json; charset=utf-8\"");
-            Console.WriteLine("-HttpWebResponse");
-            Console.WriteLine("-StreamReader");
-            Console.WriteLine("Message formats: WebMessageFormat.JSON");
-            Console.WriteLine("RESt call to: http://localhost:57531/Service1.svc/StateJSON/5");
-            Console.WriteLine("The returned StateObject:");
+            Console.WriteLine("  This has multiple sections:");
+            Console.WriteLine("  Section A: simple example");
+            Console.WriteLine("  Section B: DataContractJsonSerializer  example");
+            Console.WriteLine("");
 
-            WebRequest reqJSON = WebRequest.Create(@"http://localhost:57531/Service1.svc/StateJSON/5");
+
+            Console.WriteLine("Section A uses:");
+            Console.WriteLine(" -WebRequest (ContentType = @\"application/json; charset=utf-8\"");
+            Console.WriteLine(" -HttpWebResponse");
+            Console.WriteLine(" -StreamReader");
+            Console.WriteLine(" Message formats: WebMessageFormat.JSON");
+            Console.WriteLine(" RESt call to: http://localhost:57531/Service1.svc/StateJSON/20");
+            Console.WriteLine(" The returned StateObject:");
+
+            WebRequest reqJSON = WebRequest.Create(@"http://localhost:57531/Service1.svc/StateJSON/20");
             reqJSON.Method = "GET";
             reqJSON.ContentType = @"application/json; charset=utf-8";
             HttpWebResponse respJSON = reqJSON.GetResponse() as HttpWebResponse;
@@ -216,6 +225,30 @@ namespace WCFWebServiceConsumer1
                 Console.WriteLine(strJSON);
                 Console.WriteLine("");
             }
+
+
+
+            Console.WriteLine("Section B uses:");
+            Console.WriteLine(" -HttpWebRequest");
+            Console.WriteLine(" -HttpWebResponse");
+            Console.WriteLine(" -DataContractJsonSerializer");
+            Console.WriteLine(" Message formats: WebMessageFormat.JSON");
+            Console.WriteLine(" RESt call to: http://localhost:57531/Service1.svc/StateJSON/5");
+            Console.WriteLine(" The returned StateObject:");
+            HttpWebRequest reqJSON_Http = WebRequest.Create("http://localhost:57531/Service1.svc/StateJSON/5") as HttpWebRequest;
+            using (HttpWebResponse respJSON_Http = reqJSON_Http.GetResponse() as HttpWebResponse)
+            {
+                if (respJSON_Http.StatusCode != HttpStatusCode.OK)
+                {
+                    // error
+                }
+                DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(StateObject));
+                object objResp = jsonSerializer.ReadObject(respJSON_Http.GetResponseStream());
+                StateObject StObj = objResp as StateObject;
+            }
+
+
+
 
             #endregion
 
