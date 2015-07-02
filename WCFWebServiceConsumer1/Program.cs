@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 using System.IO;                            // Stream, StreamReader
 using System.Net;                           // WebRequest, HttpWebResponse, HttpStatusCode, WebClient
 using System.Xml;                           // XmlDocument
+using System.Runtime.Serialization;         // DataContractSerializer
 using System.Runtime.Serialization.Json;    // DataContractJsonSerializer
-using WCFWebServiceConsumer1.DataObjects;
+//using WCFWebServiceConsumer1.DataObjects;
+using WCFWebServiceApplication1.DataObjects;
 
 // WCFWebServiceConsumer1
 // This console application demonstrates a simple consumer of WCFWebServiceApplication1
@@ -170,26 +172,19 @@ namespace WCFWebServiceConsumer1
                 {
                     Console.WriteLine(" -" + node.InnerText);
                 }
-
-
-
-
-                // This was not working
-                /*
-                XmlNodeList list = xmlDoc2.SelectNodes("/StateObject[@*]");
-                foreach (XmlNode node in list)
-                {
-                    XmlNode xnode = node.SelectSingleNode("/Abrv");
-
-                    if (xnode != null)
-                    {
-                        string value = xnode["Abrv"].InnerText;
-                        Console.WriteLine("Node:" + value + '\n');
-                    }
-                }
-                */
-
             }
+
+            StateObject stObj;
+            var url = new Uri("http://localhost:57531/Service1.svc/StateXML/15");
+            var reqXmlHttp = (HttpWebRequest)WebRequest.Create(url);
+            req.Method = "GET";
+            var respXmlHttp = (HttpWebResponse)reqXmlHttp.GetResponse();
+            var dataContractSerializer = new DataContractSerializer(typeof(StateObject));
+            using (var respStr = respXmlHttp.GetResponseStream())
+            {
+                stObj = (StateObject)dataContractSerializer.ReadObject(respStr);
+            }
+
             Console.WriteLine("");
             Console.WriteLine("");
 

@@ -8,13 +8,15 @@ using System.Data;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 
-namespace WCFWebServiceConsumer1.DataObjects
+// WCF data objects defined
+// - to correctly receive the WCF Response messsage, the following namespace needs to be 
+//   correctly defined based on the namespace of the WCF service [DataContract]
+namespace WCFWebServiceApplication1.DataObjects
 {
     class DataObject1
     {
     }
 
-    [DataContract]
     public class StateObject
     {
         private int _id;
@@ -23,16 +25,12 @@ namespace WCFWebServiceConsumer1.DataObjects
         private List<string> _stateList;
         //private DataTable _dt;
 
-        [DataMember]
         public int Id { get { return _id; } set { _id = value; } }
 
-        [DataMember]
         public string Abrv { get { return _abrv; } set { _abrv = value; } }
 
-        [DataMember]
         public string Name { get { return _name; } set { _name = value; } }
 
-        [DataMember]
         public List<string> StateList { get { return _stateList; } set { _stateList = value; } }
 
         /*  -- DataTable not receiveing correctly from service
