@@ -85,8 +85,6 @@ namespace WCFWebServiceConsumer1
             #endregion
 
 
-
-
             #region - Simple steps to consume the RESt StateObject from WCFWebServiceApplication1
             Console.WriteLine("*****************************************************************************-");
             Console.WriteLine("2.Simple more streamlined process");
@@ -108,7 +106,6 @@ namespace WCFWebServiceConsumer1
             Console.WriteLine("");
             Console.WriteLine("");
             #endregion
-
 
 
             #region - The original simple method to consume, works for simple types, example from: http://stackoverflow.com/questions/14058992/wcf-rest-service-consumption-in-c-sharp-console-application
@@ -187,7 +184,6 @@ namespace WCFWebServiceConsumer1
 
             Console.WriteLine("");
             Console.WriteLine("");
-
             #endregion
 
 
@@ -221,8 +217,6 @@ namespace WCFWebServiceConsumer1
                 Console.WriteLine("");
             }
 
-
-
             Console.WriteLine("Section B uses:");
             Console.WriteLine(" -HttpWebRequest");
             Console.WriteLine(" -HttpWebResponse");
@@ -244,12 +238,33 @@ namespace WCFWebServiceConsumer1
                 // DataTable not being correctly received from Service
                 //System.Data.DataTable dt = StObj.DataTable;
             }
+            #endregion
 
 
+            #region - Simple POST example from "http://www.c-sharpcorner.com/UploadFile/surya_bg2000/developing-wcf-restful-services-with-get-and-post-methods/"
+
+            string urlPost = "http://localhost:57531/Service1.svc/ObjLoad";
+            ASCIIEncoding encoding = new ASCIIEncoding();
+            string strResult = string.Empty;
+
+            LoadObjects load = new LoadObjects();
+            load.Id = 1;
+            load.Value1 = 250;
+            load.Value2 = 25;
+            load.Desc1 = "Load Obj Desc 1 - Tester";
+            load.Desc2 = "Load Obj Desc 2 - Tester";
+
+            byte[] data = encoding.GetBytes(load.ToString());
+
+            HttpWebRequest reqPost = WebRequest.Create(urlPost) as HttpWebRequest;
+            reqPost.Method = "POST";
+
+            Stream newStream = reqPost.GetRequestStream();
+            newStream.Write(data, 0, 1);
+            
 
 
             #endregion
-
 
         }
     }

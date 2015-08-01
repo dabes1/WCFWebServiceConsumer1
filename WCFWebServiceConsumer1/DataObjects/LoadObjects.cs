@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WCFWebServiceConsumer1.DataObjects
+namespace WCFWebServiceApplication1.DataObjects
 {
     public class LoadObjects
     {
