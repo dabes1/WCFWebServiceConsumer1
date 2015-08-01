@@ -260,9 +260,22 @@ namespace WCFWebServiceConsumer1
             reqPost.Method = "POST";
 
             Stream newStream = reqPost.GetRequestStream();
-            newStream.Write(data, 0, 1);
-            
+            newStream.Write(data, 0, data.Length);
 
+            HttpWebResponse respPost = (HttpWebResponse)reqPost.GetResponse();
+            // set utf8 encoding
+            Encoding enc = System.Text.Encoding.GetEncoding("utf-8?");
+            // read response stream from response object
+            StreamReader loResponseStream =
+                new StreamReader(respPost.GetResponseStream(), enc);
+            // read string from stream data
+            strResult = loResponseStream.ReadToEnd();
+            // close the stream object
+            loResponseStream.Close();
+            // close the response object
+            respPost.Close();
+            // below steps remove unwanted data from response string
+            strResult = strResult.Replace("</string>", "");
 
             #endregion
 
