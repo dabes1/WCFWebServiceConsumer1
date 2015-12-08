@@ -85,6 +85,7 @@ namespace WCFWebServiceConsumer1
             #endregion
 
 
+            /*
             #region - Simple steps to consume the RESt StateObject from WCFWebServiceApplication1
             Console.WriteLine("*****************************************************************************-");
             Console.WriteLine("2.Simple more streamlined process");
@@ -106,8 +107,9 @@ namespace WCFWebServiceConsumer1
             Console.WriteLine("");
             Console.WriteLine("");
             #endregion
+            */
 
-
+            /*
             #region - The original simple method to consume, works for simple types, example from: http://stackoverflow.com/questions/14058992/wcf-rest-service-consumption-in-c-sharp-console-application
             Console.WriteLine("*****************************************************************************-");
             Console.WriteLine("3.XML Format response and parsing - simple examples");
@@ -185,8 +187,9 @@ namespace WCFWebServiceConsumer1
             Console.WriteLine("");
             Console.WriteLine("");
             #endregion
+            */
 
-
+            /*
             #region - Example to consume a Data object, example from: http://stackoverflow.com/questions/14058992/wcf-rest-service-consumption-in-c-sharp-console-application
             Console.WriteLine("*****************************************************************************-");
             Console.WriteLine("4.JSON(JavaScript Object Notation) Format response/parsing - simple examples");
@@ -239,10 +242,46 @@ namespace WCFWebServiceConsumer1
                 //System.Data.DataTable dt = StObj.DataTable;
             }
             #endregion
+            */
 
 
-            #region - Simple POST example from "http://www.c-sharpcorner.com/UploadFile/surya_bg2000/developing-wcf-restful-services-with-get-and-post-methods/"
+            ///*
+            #region - POST Methods
+            
+            // Restful service URL, example from: "http://www.c-sharpcorner.com/UploadFile/surya_bg2000/developing-wcf-restful-services-with-get-and-post-methods/"
+            string url = "http://localhost:57531/Service1.svc/PostSampleMethod/New";
+           
+            ASCIIEncoding encoding = new ASCIIEncoding();                       // declare ascii encoding
+            string strResult = string.Empty;            
+            string SampleXml = @"<parent>" +                                    // sample xml sent to Service & this data is sent in POST
+                   "<child>" +
+                      "<username>username</username>" +
+                        "<password>password</password>" +
+                       "</child>" +
+                    "</parent>";
 
+            string postData = SampleXml.ToString();            
+            byte[] data = encoding.GetBytes(postData);                          // convert xmlstring to byte using ascii encoding            
+            HttpWebRequest webrequest = (HttpWebRequest)WebRequest.Create(url); // declare httpwebrequet wrt url defined above\            
+            webrequest.Method = "POST";// set method as post            
+            webrequest.ContentType = "application/x-www-form-urlencoded";       // set content type\            
+            webrequest.ContentLength = data.Length;                             // set content length
+            
+            Stream newStream = webrequest.GetRequestStream();                   // get stream data out of webrequest object
+            newStream.Write(data, 0, data.Length);
+            newStream.Close();
+            
+            HttpWebResponse webresponse = (HttpWebResponse)webrequest.GetResponse();// declare & read response from service
+            Encoding enc = Encoding.UTF8;                                       // set utf8 encoding
+            StreamReader loResponseStream = new StreamReader(webresponse.GetResponseStream(), enc);// read response stream from response object            
+            strResult = loResponseStream.ReadToEnd();                           // read string from stream data            
+            loResponseStream.Close();                                           // close the stream object
+            webresponse.Close();                                                // close the response object
+            strResult = strResult.Replace("</string>", "");                     // below steps remove unwanted data from response string
+            
+
+
+            /*  -- this did not work
             string urlPost = "http://localhost:57531/Service1.svc/ObjLoad";
             ASCIIEncoding encoding = new ASCIIEncoding();
             string strResult = string.Empty;
@@ -258,13 +297,27 @@ namespace WCFWebServiceConsumer1
 
             HttpWebRequest reqPost = WebRequest.Create(urlPost) as HttpWebRequest;
             reqPost.Method = "POST";
+            reqPost.ContentType = "application/x-www-form-urlencoded";
+            reqPost.ContentLength = data.Length;
 
             Stream newStream = reqPost.GetRequestStream();
             newStream.Write(data, 0, 1);
-            
+            newStream.Close();
+
+            HttpWebResponse rspPost = reqPost.GetResponse() as HttpWebResponse;
+            Encoding enc = System.Text.Encoding.GetEncoding("utf-8?");
+            StreamReader IoResponseStream = new StreamReader(rspPost.GetResponseStream(), enc);
+            strResult = IoResponseStream.ReadToEnd();
+            IoResponseStream.Close();
+            rspPost.Close();
+            */
+
 
 
             #endregion
+            //*/
+
+
 
         }
     }
